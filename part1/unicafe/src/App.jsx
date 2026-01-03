@@ -6,7 +6,10 @@ return (
 }
 const StatisticLine = ({text, count}) => {
   return(
-    <p>{text} {count}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{count}</td>
+    </tr>
   )
 }
 const Statistics = ({gCount, nCount, bCount, tCount, aCount, pCount}) => {
@@ -20,12 +23,18 @@ const Statistics = ({gCount, nCount, bCount, tCount, aCount, pCount}) => {
   return(
     <div>
     <h1>statistics</h1>
+    <table>
+      <tbody>
       <StatisticLine text = "good" count={gCount} />
       <StatisticLine text = "neutral" count={nCount} />
       <StatisticLine text = "bad" count={bCount} />
       <StatisticLine text = "total" count={tCount} />
       <StatisticLine text = "average" count = {aCount} />
       <StatisticLine text = "positive" count = {pCount} />
+      </tbody>
+    </table>
+      
+      
   </div>
   )
 }
