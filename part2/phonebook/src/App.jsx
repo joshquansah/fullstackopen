@@ -1,7 +1,9 @@
 import {useEffect, useState } from 'react'
 import Display from './components/Display'
 import Form from './components/Form'
-import axios from 'axios'
+import Notificaton from './components/Notification'
+import Error from './components/Error'
+import './index.css'
 import phonebook from './services/phonebook'
 
 const App = () => {
@@ -9,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setNewFilter] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     phonebook.getAll()
@@ -45,8 +49,18 @@ const App = () => {
       setPersons(persons.map(person => person.id == id ? newNum : person))
       setNewName('')
       setNewNumber('')
-    }
-    )
+      setNotification(`Replaced ${newName}'s number`)
+      setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+    }).catch(error => {
+      setErrorMessage(`Information of ${newName} has already been removed from server`
+      )
+      setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      setNotes(persons.filter(n => n.id !== id))
+    })
     }
     }
     else{
@@ -55,6 +69,10 @@ const App = () => {
       setPersons(persons.concat(addedName))
       setNewName('')
       setNewNumber('')
+      setNotification(`Added ${newName}`)
+      setTimeout(() => {
+          setNotification(null)
+        }, 5000)
     }
     )
     }
@@ -66,14 +84,23 @@ const App = () => {
     e.preventDefault()
     if(window.confirm(`Delete ${e.target.name} ?`)){
     phonebook.remove(e.target.value)
-    .then(setPersons(persons.filter(person => person.id !== e.target.value)))
-    }
+    .then(() => {
+    setPersons(persons.filter(person => person.id !== e.target.value))
+    setErrorMessage(`Removed ${e.target.name}`)
+      setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+  )
+}
   }
   const numbersToShow = persons.filter(person => person && person.name.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notificaton message={notification} />
+      <Error warning={errorMessage} />
       <Form onClick={handleNewPerson} filter={filter} handleNewFilter={handleNewFilter} newName={newName} handleNewName={handleNewName} newNumber={newNumber} handleNewNumber={handleNewNumber} />
       <h2>Numbers</h2>
       <Display persons = {numbersToShow} onClick={removePerson}/>
