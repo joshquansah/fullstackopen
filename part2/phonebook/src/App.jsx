@@ -59,7 +59,7 @@ const App = () => {
       setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-      setNotes(persons.filter(n => n.id !== id))
+      setNotes(persons.filter(p => p.id !== id))
     })
     }
     }
