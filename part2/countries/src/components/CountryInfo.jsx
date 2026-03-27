@@ -20,7 +20,7 @@ const CountryInfo = ({countryInfo}) => {
         <>
         <h1>{countryInfo.name.common}</h1> 
         <p>Capital {countryInfo.capital[0]}</p>
-        <p>Area {countryInfo.area}</p>
+        <p>Area {countryInfo.area} sq km</p>
         <h2>Languages</h2>
         <ul>
             {Object.entries(countryInfo.languages).map(([k, v]) => 
